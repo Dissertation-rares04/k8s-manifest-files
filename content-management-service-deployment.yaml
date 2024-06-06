@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-management-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: content-management-service
+  template:
+    metadata:
+      labels:
+        app: content-management-service
+    spec:
+      containers:
+        - name: content-management-service
+          image: disertation.azurecr.io/contentmanagementservice-api:latest
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: RabbitMQ__Hostname
+              value: "rabbitmq"
+            - name: RabbitMQ__Port
+              value: "5672"
+            - name: Kafka__BootstrapServers
+              value: "kafka-broker:29092"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: content-management-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: content-management-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

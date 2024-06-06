@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: core-app
+  template:
+    metadata:
+      labels:
+        app: core-app
+    spec:
+      containers:
+        - name: core-app
+          image: disertation.azurecr.io/core-app:latest
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: API_URL
+              value: http://some-api-url/api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: core-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: core-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80

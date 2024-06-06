@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-management-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-management-service
+  template:
+    metadata:
+      labels:
+        app: notification-management-service
+    spec:
+      containers:
+        - name: notification-management-service
+          image: disertation.azurecr.io/notificationmanagementservice-workerservice:latest
+          ports:
+            - containerPort: 81
+              name: http
+          env:
+            - name: RabbitMQ__Hostname
+              value: "rabbitmq"
+            - name: RabbitMQ__Port
+              value: "5672"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-management-service
+spec:
+  selector:
+    app: notification-management-service
+  ports:
+    - name: http
+      port: 81
+      targetPort: 81
