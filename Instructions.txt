@@ -1,0 +1,13 @@
+1. Create k8s cluster
+2. Give acr pull rights to k8s cluster
+3. Push images to acr via bat script
+4. Create deployment and services for all apps
+5. Install k8s nginx ingress controller with basic configuration
+6. Import the cert-manager images used by the Helm chart into your ACR 
+7. Add A record to domain host records. It must points to the ingress controller external IP address
+8. Install cert-manager
+9. Create CA cluster
+10. Create ingress
+
+For step 5: https://learn.microsoft.com/en-us/azure/aks/ingress-basic?tabs=azure-cli
+For steps 6-10: https://learn.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
