@@ -20,17 +20,28 @@ spec:
               name: http
           env:
             - name: API_URL
-              value: http://some-api-url/api
+              value: https://www.rares-disertation.xyz/content-management-service/api
+            - name: AUTH0_DOMAIN
+              value: dev-re5ucc1nn12lb5qo.us.auth0.com
+            - name: AUTH0_CLIENTID
+              value: 7PsLF1tiowoy50Ru4EW4EiWwk3uG6ylE
+            - name: AUTH0_AUDIENCE
+              value: https://hello-world.example.com
+            - name: AUTH0_REDIRECT_URI
+              value: https://www.rares-disertation.xyz/callback
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: core-app
+  labels:
+    app: core-app
 spec:
-  type: LoadBalancer
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
   selector:
     app: core-app
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80

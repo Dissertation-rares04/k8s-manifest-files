@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: disertation-ing
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    ert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - www.rares-disertation.xyz
+    secretName: tls-secret
+  rules:
+  - host: www.rares-disertation.xyz
+    http:
+      paths:
+      - path: /?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: main-app
+            port:
+              number: 80
+      - path: /core-app/?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: core-app
+            port:
+              number: 80
+      - path: /header-app/?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: header-app
+            port:
+              number: 80
+      - path: /content-management-service/?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: content-management-service
+            port:
+              number: 80
